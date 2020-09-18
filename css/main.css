@@ -1,0 +1,83 @@
+body {
+  font-family: sans-serif;
+}
+
+canvas {
+  position: absolute;
+}
+
+#toolbar {
+  background-color: #BCA6C4;
+  color: white;
+  font-weight: normal;
+  font-size: 15pt;
+}
+
+#nicknamesetting {
+  margin-top: 5vh;
+  display: flex;
+  justify-content: center;
+}
+
+#name {
+  width: 500px;
+}
+
+#nicknamebutton {
+  margin-left: 6vh;
+  background-color: #BCA6C4;
+  color: white;
+}
+
+#logo {
+  margin-top: 20vh;
+  width: 475px;
+  height: 215px;
+}
+
+#logobox {
+  display: flex;
+  justify-content: center;
+}
+
+#video_chat {
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  width: 100vw;
+}
+
+#canvas_video {
+  width: 80vw;
+}
+
+#canvas_place {
+  z-index: 1;
+  width: 80vw;
+}
+
+#videos {
+  width: 80vw;
+}
+
+#send {
+  position: absolute;
+  top: 77vh;
+}
+
+#content {
+  overflow-y: scroll;
+  height: 80vh;
+  width: 20vw;
+}
+
+#button {
+  background-color: #BCA6C4;
+  color: white;
+}
+
+#container {
+  position: absolute;
+  top: 0vh;
+  z-index: -1;
+}

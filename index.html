@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf8" />
+  <title>Realtime communication with WebRTC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <link href="/RetailSmart/Jquery/jquery.multiselect.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/main.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"> </script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"> </script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <script src=”https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js”></script> 
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script src="js/opencv.js" type="text/javascript"></script>
+
+  <script defer src="js/face-api.min.js"></script>
+  <script defer src="js/script.js"></script>
+  <script defer src="js/person.js"></script>
+  
+  
+  
+  <script>
+    window.onload = function () {
+      // 변수를 선언합니다.
+      var socket = io.connect();
+      // 소켓 이벤트를 연결합니다.
+      socket.emit('join', room);
+      document.getElementById("room_id").innerHTML = room+"";
+
+      
+      socket.on('msg', function (data) {
+        var output = '';
+        output += '<li>';
+        output += '    <h3>' + data.name + '</h3>';
+        output += '    <p>' + data.message + '</p>';
+        output += '    <p>' + data.date + '</p>';
+        output += '</li>';
+
+        // 객체 추가
+        $(output).appendTo('#content');
+        $('#content').listview('refresh');
+      });
+
+
+      $('#button').click(function () {
+        socket.emit('msg', {
+          name: $('#name').val(),
+          message: $('#message').val(),
+          date: new Date().toUTCString()
+        });
+        document.getElementById("message").value = "";
+      });
+
+      socket.on('image', function (data) {
+        var output = '';
+        output += '<li>';
+        output += '    <h3>' + data.name + '</h3>';
+        output += '    <img src =' + data.message + ' height = 200px width = 200px>';
+        // 이때 이미지가 깨지는 이유: 127.0.0.1:52273 + data.message로 접속된다.
+        // s3를 사용해서 s3주소를 날라오게 하면 가능하다. 
+
+        output += '    <p>' + data.date + '</p>';
+        output += '</li>';
+        
+        // 객체 추가
+        $(output).prependTo('#content');
+        $('#content').listview('refresh');
+      });
+
+      $(function(){
+        $('#uploadBtn').on('click', function(){
+        uploadFile();
+        
+        });
+      });
+      
+      function uploadFile(){
+        var form = $('#uploadForm')[0];
+        var formData = new FormData();
+        formData.append("image", $("input[name=test]")[0].files[0]);
+        var obj = {formData}
+        $.ajax({
+          url : 'https://127.0.0.1:3000/image',
+          type : 'POST',
+          method: "POST",
+          timeout: 0,
+          processData: false,
+          mimeType: "multipart/form-data",
+          contentType: false,
+          data: formData,
+         
+          success: function (data) {
+            socket.emit('image', {
+              name: $('#name').val(),
+              message: data,
+              date: new Date().toUTCString()
+            });
+            console.log("yesss");
+            alert("complete");
+            $("#btnSubmit").prop("disabled", false);
+          },
+          error: function (e) {
+            console.log("ERROR : ", e);
+            $("#btnSubmit").prop("disabled", false);
+            alert("fail");
+            console.log("noooo");
+          }
+        }).done(function(data){
+          callback(data);
+        });
+        $.submit();
+      }
+    };
+  </script>
+</head>
+
+<body>
+  <div data-role="page">
+    <div data-role="header" id="toolbar">
+      <h1>Manna</h1>
+    </div>
+    <div id="logobox">
+      <img src="assets/logo.png" id="logo">
+    </div>
+    <div data-role="content" id="nicknamesetting">
+        <input id="name" placeholder="Enter your nickname"/>
+        <a data-role="button" href="#chatpage" id="nicknamebutton">Join</a>
+    </div>
+  </div>
+
+
+  <div data-role="page" id="chatpage">
+    <div data-role="header" id="toolbar">
+      <h1 id="room_id">YOUNIVERSE</h1>
+    </div>
+  <div id="video_chat"> 
+    <div id="canvas_video">
+      
+      <div id="canvas_place"></div>
+      <div id="videos">
+        <video id="localVideo"  width="600" height="450"autoplay muted playsinline ></video>      
+        <video id="remoteVideo" width="600" height="450" autoplay playsinline ></video>
+        <div id="container"></div>
+      </div>
+      <font color="blue">
+        <div id="info">...</div>
+        <div id="open_check"></div>
+        <div id="check_text"></div>
+      </font>
+    </div>
+
+    <div id="chatsystem">
+      <div id="cautionText"></div>
+          <!-- 메세지 입력 -->
+      <div data-role="content">
+          <!-- 전송한 내용이 출력될 위치 -->
+        <ul id="content" data-role="listview" data-inset="false"></ul>
+        <div id="send">
+          <input id="message" />
+          <button id='button'>send</button>
+        </div>
+      </div>
+    </div>
+    
+  
+  </div>
+  
+
+  
+  <!-- This file is automatically added/served when running "node index.js". -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  <script src="js/main.js"></script>
+ 
+</body>
+
+</html>
