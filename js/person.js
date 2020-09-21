@@ -1,27 +1,11 @@
 const info = document.getElementById("info");
 const video = document.getElementById("localVideo");
 let net;
-var check = false;
 async function makeNet() {
-    // info.innerHTML = "Now loading... Please wait.";
     net = await cocoSsd.load();
-    // info.innerHTML = "Ready to use!";
     setInterval(detect, 0);
 }
 makeNet();
-
-// async function f(){
-//   console.log('no person error');
-//   let promise = new Promise((resolve, reject) =>{
-//     setTimeout(() => resolve("사람 감지 안돼!"), 9000)
-//   });
-//   let result = await promise;
-//   console.log(check+"");
-//   if(!check){
-//     alert(result);
-//   }
-//   check = true;
-// }
 
 let predict;
 const canvas = document.getElementById("localVideo");
@@ -47,19 +31,14 @@ async function detect() {
       }
 
       if (peopleN == 0) {
-          check = false;
-          document.getElementById("check_text").innerHTML = "사람이 감지되지 않습니다.";
-          //f();
+          document.getElementById("check_text").innerHTML = "자리로 돌아오세요";
       } else if (phoneN > 0) {
           document.getElementById("check_text").innerHTML = "휴대폰 만지지 마세요!!!!!!!!!!!";
       } else {
           document.getElementById("check_text").innerHTML = "";
-          check = true;
       }
   }
   else {
-    check = false;
     document.getElementById("check_text").innerHTML = "자리로 돌아오세요";
-    //await f();
   }
 }
