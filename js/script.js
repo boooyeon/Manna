@@ -56,7 +56,7 @@ document.getElementById("localVideo").addEventListener('play', () => {
         var ranNum = Math.floor(Math.random() * (max - min + 1)) + min;
         return ranNum;
     }
-    var rand_num = generateRandom(0, 13);
+    var rand_num = generateRandom(0, 14);
 
     while (!image) {
         image = document.createElement('img');
