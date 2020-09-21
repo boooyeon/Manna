@@ -51,7 +51,6 @@ io.sockets.on('connection', function(socket) {
 
   socket.on('message', function(message) {
     log('Client said: ', message);
-    console.log("안녕")
     // for a real app, would be room-only (not broadcast)
     socket.broadcast.emit('message', message);
   });
@@ -59,9 +58,6 @@ io.sockets.on('connection', function(socket) {
   socket.on('msg', (data) => {
     io.sockets.emit('msg', data);
     console.log(data);
-    // var output = 'hello';
-    // $(output).prependTo('#content');
-    // $('#content').listview('refresh');
   });
 
   socket.on('image', (data)=>{
