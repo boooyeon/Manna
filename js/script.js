@@ -77,6 +77,7 @@ document.getElementById("localVideo").addEventListener('play', () => {
     while (!image) {
         image = document.createElement('img');
         image.src = 'assets/' + rand_num + '.png';
+        
     }
 
   const displaySize = { width: document.getElementById("localVideo").width, height: document.getElementById("localVideo").height }
@@ -239,6 +240,7 @@ document.getElementById("localVideo").addEventListener('play', () => {
         console.log("closed")
         text.innerHTML = "Closed"
         text.style.backgroundColor = "red"
+        CHECK=true
 
       }
       // pageScroll() // Scroll the element of class winkScroll
