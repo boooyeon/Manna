@@ -27,6 +27,22 @@ const bufferSize = 5;
 var flag = 0;
 var threshold = 35;
 
+var input1 = document.getElementById("message");
+input1.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    document.getElementById("button").click();
+  }
+});
+
+var input2 = document.getElementById("name");
+input2.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    document.getElementById("nicknamebutton").click();
+  }
+});
+
 if(!DEBUG){
   canvas2.style.display="none";
   canvas3.style.display="none";
