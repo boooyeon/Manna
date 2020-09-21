@@ -50,15 +50,18 @@ document.getElementById("localVideo").addEventListener('play', () => {
   // Create the overlayed canvas and append it to body
   const canvas = faceapi.createCanvasFromMedia(document.getElementById("localVideo"))
   document.getElementById('canvas_place').append(canvas)
-
   let image;
 
-  if (!image) {
-    image = document.createElement('img');
-    image.src = 'assets/happy1.png';
-  }
+    var generateRandom = function (min, max) {
+        var ranNum = Math.floor(Math.random() * (max - min + 1)) + min;
+        return ranNum;
+    }
+    var rand_num = generateRandom(0, 13);
 
-  
+    while (!image) {
+        image = document.createElement('img');
+        image.src = 'assets/' + rand_num + '.png';
+    }
 
   const displaySize = { width: document.getElementById("localVideo").width, height: document.getElementById("localVideo").height }
   faceapi.matchDimensions(canvas, displaySize) // match dimensions of canvas and video feed

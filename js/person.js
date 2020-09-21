@@ -60,6 +60,6 @@ async function detect() {
   else {
     check = false;
     document.getElementById("check_text").innerHTML = "사람이 감지되지 않습니다.";
-    f();
+    await f();
   }
 }
