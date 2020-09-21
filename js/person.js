@@ -3,9 +3,9 @@ const video = document.getElementById("localVideo");
 let net;
 var check = false;
 async function makeNet() {
-    info.innerHTML = "Now loading... Please wait.";
+    // info.innerHTML = "Now loading... Please wait.";
     net = await cocoSsd.load();
-    info.innerHTML = "Ready to use!";
+    // info.innerHTML = "Ready to use!";
     setInterval(detect, 0);
 }
 makeNet();
@@ -20,7 +20,7 @@ async function f(){
   if(!check){   
     alert(result);
   }
-  
+  check = true;
 }
 
 let predict;
@@ -31,28 +31,35 @@ ctx.fillStyle = "rgb(0, 255, 0)";
 ctx.lineWidth = 2;
 ctx.font = "15px Arial";
 async function detect() {
-    predict = await net.detect(video);
-    info.innerHTML = "Object No. : " + predict.length;
-    if (predict.length > 0) {
-        
-        for (let i = 0; i < predict.length; i++) {
+  var peopleN = 0, phoneN = 0;
+  predict = await net.detect(video);
+  // info.innerHTML = "Object No. : " + predict.length;
+  if (predict.length > 0) {
+
+      for (let i = 0; i < predict.length; i++) {
           console.log(predict[i].class)
-            if((predict[i].class+"") == 'person'){
-              document.getElementById("check_text").innerHTML = "";
-              check = true;
-            }else if((predict[i].class+"") == 'cell phone'){
-              document.getElementById("check_text").innerHTML = "휴대폰 만지지 마세요!!!!!!!!!!!";
-            }
-            else{
-              check = false;
-              document.getElementById("check_text").innerHTML = "사람이 감지되지 않습니다.";
-              f();
-            }
-            
-        }
-    }else{
-      check = false;
-      document.getElementById("check_text").innerHTML = "사람이 감지되지 않습니다.";
-      f();
-    }
+          if ((predict[i].class + "") == 'person') {
+              peopleN += 1;
+              //check = true;
+          } else if ((predict[i].class + "") == 'cell phone') {
+              phoneN += 1;
+          }
+      }
+
+      if (peopleN == 0) {
+          check = false;
+          document.getElementById("check_text").innerHTML = "사람이 감지되지 않습니다.";
+          f();
+      } else if (phoneN > 0) {
+          document.getElementById("check_text").innerHTML = "휴대폰 만지지 마세요!!!!!!!!!!!";
+      } else {
+          document.getElementById("check_text").innerHTML = "";
+          check = true;
+      }
+  }
+  else {
+    check = false;
+    document.getElementById("check_text").innerHTML = "사람이 감지되지 않습니다.";
+    f();
+  }
 }
