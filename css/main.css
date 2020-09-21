@@ -49,35 +49,59 @@ canvas {
 
 #canvas_video {
   width: 80vw;
+  height: 90vh;
+  display: flex;
+  align-items: center;
 }
 
 #canvas_place {
   z-index: 1;
   width: 80vw;
+  height: 90vh;
+  position: absolute;
+  display: flex;
+  align-items: center;
 }
 
 #videos {
   width: 80vw;
+  position: absolute;
 }
 
 #send {
   position: absolute;
-  top: 77vh;
+  top: 83vh;
+  display:flex;
+  justify-content: flex-end;
+}
+
+#chatsystem {
+  width: 20vw;
 }
 
 #content {
   overflow-y: scroll;
-  height: 80vh;
+  height: 83vh;
   width: 20vw;
+}
+
+#message {
+  width:13vw;
 }
 
 #button {
   background-color: #BCA6C4;
   color: white;
+  width: 5vw;
 }
 
 #container {
   position: absolute;
   top: 0vh;
   z-index: -1;
+}
+
+#logs {
+  position: absolute;
+  top: 80vh;
 }
