@@ -56,7 +56,7 @@ document.getElementById("localVideo").addEventListener('play', () => {
         var ranNum = Math.floor(Math.random() * (max - min + 1)) + min;
         return ranNum;
     }
-    var rand_num = generateRandom(0, 14);
+    var rand_num = generateRandom(0, 13);
 
     while (!image) {
         image = document.createElement('img');
@@ -223,7 +223,7 @@ document.getElementById("localVideo").addEventListener('play', () => {
         console.log("closed")
         text.innerHTML = "Closed"
         text.style.backgroundColor = "red"
-        CHECK = true
+
       }
       // pageScroll() // Scroll the element of class winkScroll
     } else {
