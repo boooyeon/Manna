@@ -1,6 +1,6 @@
 'use strict';
 //////////////////////////
-// const https = require('https')
+const https = require('https')
 var http = require('http')
 const fs = require('fs')
 var os = require('os');
@@ -8,6 +8,7 @@ var nodeStatic = require('node-static');
 var socketIO = require('socket.io');
 ///////////////////////////////
 var express = require('express');
+// const cors = require('cors');
 // var app = express();
 /////////////////////////
 var multer = require('multer');
@@ -25,19 +26,19 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 // const router = require('./index.js');
 
-// const options = {
-//   key:fs.readFileSync('./private.pem'),
-//   cert:fs.readFileSync('./public.pem')
-// };
+const options = {
+  key:fs.readFileSync('./private.pem'),
+  cert:fs.readFileSync('./public.pem')
+};
 
 
 
 var fileServer = new(nodeStatic.Server)();
-var app = http.createServer(function(req, res){
+var app = https.createServer(options ,(req, res)=>{
   fileServer.serve(req, res);
 }).listen(3000);
 
-console.log('Server Running at http://127.0.0.1:3000');
+console.log('Server Running at https://127.0.0.1:3000');
 
 var io = socketIO.listen(app);
 io.sockets.on('connection', function(socket) {
